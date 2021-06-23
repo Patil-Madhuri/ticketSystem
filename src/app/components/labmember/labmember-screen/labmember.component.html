@@ -1,0 +1,53 @@
+<!-- <center> -->
+<div class="home-container">
+  <div class="main-container">
+    <mat-toolbar>
+      <img src="../../../assets/logo.png" alt="" height="35px">
+      &nbsp;&nbsp;&nbsp;&nbsp;<span>Admin</span>
+      <span class="example-spacer"></span>
+      <div style="display: grid;font-size: 12px;">
+        <img src="../../../../assets/user.png" alt="" height="30px" width="30px" style="margin-left: 17%;">
+        <span> {{userId.name}}</span>
+      </div>
+      <button mat-icon-button (click)="redirectTo()">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </mat-toolbar>
+    <div class="main-div">
+      <div class="mg-left">
+        <div>
+          <h4>Today's Date: {{currentDate | date: 'MMMM d, y'}}</h4>
+        </div>
+      </div>
+      <div class="mat-elevation-z8">
+        <mat-table [dataSource]="dataSource">
+          <ng-container matColumnDef="srno">
+            <mat-header-cell *matHeaderCellDef> Sr No. </mat-header-cell>
+            <mat-cell *matCellDef="let element;let i = index"> {{i+1}}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="date">
+            <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              {{element.date}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="summary">
+            <mat-header-cell *matHeaderCellDef> Issue Title </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.issue_title}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="assignto">
+            <mat-header-cell *matHeaderCellDef> Assign </mat-header-cell>
+            <mat-cell *matCellDef="let element;let i = index">
+              <button mat-stroked-button color="primary" (click)="viewAssignTicket(element)">Assign</button>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+      </div>
+    </div>
+  </div>
+</div>

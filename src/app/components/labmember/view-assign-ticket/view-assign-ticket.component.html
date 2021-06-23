@@ -1,0 +1,51 @@
+<h1 mat-dialog-title>Ticket</h1>
+<div mat-dialog-content>
+  <div>
+    <mat-form-field style="width: 100%">
+      <input type="text" matInput placeholder="Student ID" readonly [(ngModel)]="data.id">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field style="width: 100%">
+      <input type="text" matInput placeholder="Course" readonly [(ngModel)]="data.course">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field style="width: 100%">
+      <input type="text" matInput placeholder="Subject" readonly [(ngModel)]="data.issue_title">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field style="width: 100%">
+      <input type="text" matInput placeholder="Issue Category" readonly [(ngModel)]="data.issue_category">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field style="width: 100%">
+      <textarea matInput rows="1" placeholder="Issue Description" readonly [(ngModel)]="data.issue_description"
+        autocomplete="off">
+                    </textarea>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field style="width: 100%">
+      <input type="text" matInput placeholder="Timeslot" readonly [(ngModel)]="data.timeslot">
+    </mat-form-field>
+  </div>
+
+  <mat-form-field class="assign" style="width: 30%;" *ngIf="userId.role == 'labmember'">
+    <mat-select (selectionChange)="setAssignTo($event)" placeholder="Select">
+      <mat-option *ngFor="let item of supportMember" [value]="item.id">{{item.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+</div>
+<div mat-dialog-actions class="right">
+  <button mat-raised-button (click)="assignTicket()" *ngIf="userId.role == 'labmember'">
+    <span>Assign</span>
+  </button>
+  <button mat-raised-button type="button" (click)="closeForm(true)">
+    <mat-icon>clear</mat-icon>
+    <span>Cancel</span>
+  </button>
+</div>

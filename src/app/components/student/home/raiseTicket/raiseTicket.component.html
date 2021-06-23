@@ -1,0 +1,102 @@
+<h1 mat-dialog-title>{{data ? 'Edit Ticket': 'Raise Ticket'}}</h1>
+<div mat-dialog-content>
+  <form [formGroup]="masterFormGroup" class="container-fluid" novalidate>
+    <!-- <div>
+      <mat-form-field style="width: 100%">
+        <input type="text" matInput placeholder="Student ID" formControlName="student_id">
+        <mat-error *ngIf="this.masterFormGroup.get('student_id').invalid">
+          Please Enter Valid ID </mat-error>
+      </mat-form-field>
+    </div> -->
+    <div>
+      <mat-form-field style="width: 100%">
+        <input type="text" matInput placeholder="Student Name" formControlName="name">
+        <mat-error *ngIf="this.masterFormGroup.get('name').invalid">
+          Please Enter Valid Name </mat-error>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field style="width: 100%">
+        <input type="text" matInput placeholder="Student Course" formControlName="course">
+        <mat-error *ngIf="this.masterFormGroup.get('course').invalid">
+          Please Enter Valid course </mat-error>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field style="width: 100%">
+        <input type="text" matInput placeholder="Subject" formControlName="issue_title">
+        <mat-error *ngIf="this.masterFormGroup.get('issue_title').invalid">
+          Please Enter Valid Subject </mat-error>
+      </mat-form-field>
+    </div>
+    <div>
+      <!-- <mat-form-field style="width: 100%">
+        <input type="text" matInput placeholder="Issue Category" formControlName="issue_category">
+        <mat-error *ngIf="this.masterFormGroup.get('issue_category').invalid">
+          Please Enter Valid Issue Category </mat-error>
+      </mat-form-field> -->
+      <mat-form-field style="width: 100%">
+        <mat-label>Issue Category</mat-label>
+        <mat-select formControlName="issue_category">
+          <mat-option *ngFor="let cat of issue_Cat" [value]="cat.id">
+            {{cat.title}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field style="width: 100%">
+        <textarea matInput rows="1" placeholder="Issue Description" formControlName="issue_description"
+          autocomplete="off">
+                      </textarea>
+        <mat-error *ngIf="this.masterFormGroup.get('issue_description').invalid">
+          Please Enter Valid Issue Description </mat-error>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field style="width: 100%">
+        <input matInput [matDatepicker]="picker" formControlName="date" required placeholder="Enter date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="masterFormGroup.get('date').invalid">
+          Please select valid date</mat-error>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field style="width: 100%">
+        <mat-label>Timeslot</mat-label>
+        <mat-select formControlName="timeslot">
+          <mat-option *ngFor="let time of timeSlots" [value]="time">
+            {{time}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- <div>
+      <mat-label>Behalf Of:</mat-label>
+      <mat-radio-group formControlName="behalf_of" class="singupas">
+        <mat-radio-button value="self">Self</mat-radio-button>
+        <mat-radio-button value="other">Other</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div *ngIf="masterFormGroup.get('behalf_of').value =='other' ">
+      <mat-form-field style="width: 100%">
+        <input type="text" matInput placeholder="Name" formControlName="behalf_of_name">
+        <mat-error *ngIf="this.masterFormGroup.get('behalf_of_name').invalid">
+          Please Enter Valid Issue Category </mat-error>
+      </mat-form-field>
+    </div> -->
+  </form>
+
+</div>
+<div mat-dialog-actions class="right">
+  <button mat-raised-button (click)="addItem()">
+    <mat-icon>save</mat-icon>
+    <span>Save</span>
+  </button>
+  <button mat-raised-button type="button" (click)="closeForm(true)">
+    <mat-icon>clear</mat-icon>
+    <span>Cancel</span>
+  </button>
+</div>

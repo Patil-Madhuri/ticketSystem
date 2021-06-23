@@ -1,0 +1,114 @@
+.loginBtn {
+  height: 40px;
+  background: #E41F20;
+  border-radius: 25px;
+  color: white;
+  margin-top: 2em;
+  display: inline-block;
+  width: 160px;
+}
+
+.header {
+  color: #123739;
+}
+
+.forgot {
+  color: #123739;
+  font-size: 12px;
+  margin-top: 14px;
+}
+
+.full-width-input {
+  width: 100% !important;
+}
+
+.img {
+  // background: url('../../../assets/login_new.png') no-repeat 100% 0%;
+  height: 100%;
+  background-size: 44%;
+}
+
+.loginCredential {
+  padding: 5px 10px;
+  border: 1px solid gray;
+  height: 50px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.btn {
+  width: 47%;
+}
+
+:host::ng-deep .mat-form-field-underline {
+  display: none;
+  color: #E41F20;
+}
+
+.login-card {
+  width: 400px;
+}
+
+.form-div {
+  width: 80%;
+}
+
+.form-field {
+  width: 100%;
+}
+
+.button-div {
+  width: 80%;
+  padding-bottom: 2%;
+  padding-top: 2%;
+}
+
+.login-button {
+  width: 50%;
+  background-color: #E41F20;
+  color: white;
+  font-weight: 500;
+  height: 50px;
+  font-size: 20px;
+  border-radius: 5px;
+}
+
+:host ::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: #E41F20 !important;
+}
+
+:host ::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  color: #E41F20 !important;
+}
+
+.avatar {
+  height: 90px;
+  width: 90px;
+  background: black;
+  border-radius: 50%;
+}
+
+.avatar-div {
+  margin-top: -60px;
+  height: 130px;
+  width: 130px;
+  border-radius: 50%;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  background-color: #F4F8F9;
+  margin-bottom: 25px;
+}
+
+.reg {
+  margin-top: 3%;
+}
+
+.reg a {
+  text-decoration: none;
+
+}
+
+.singupas {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 3%;
+}

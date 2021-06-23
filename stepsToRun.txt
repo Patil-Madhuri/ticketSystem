@@ -1,0 +1,5 @@
+1. Install node and check version using node -v
+2. Install npm and check version using npm -v
+3. Install angular cli and check version using ng version
+4. Run npm install 
+5 Run ng serve

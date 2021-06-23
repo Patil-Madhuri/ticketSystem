@@ -1,0 +1,45 @@
+<form [formGroup]="registerForm" (submit)="register()">
+  <div fxFlex=100 fxLayout="row" fxLayoutAlign="center center" style="height: 100vh;">
+    <mat-card fxFlex="center space-around" class="login-card" fxFlex="520px">
+      <div fxLayout="column" fxLayoutAlign="center center">
+        <h2>Sign Up</h2>
+        <div class="form-div">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Name</mat-label>
+            <input matInput autocomplete="off" formControlName="name">
+            <mat-error *ngIf="!registerForm.controls['name'].valid && registerForm.controls['name'].touched">
+              {{ getErrorMessage('name', 'Name') }} </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-div">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Email</mat-label>
+            <input matInput autocomplete="off" formControlName="email">
+            <mat-error *ngIf="!registerForm.controls['email'].valid && registerForm.controls['email'].touched">
+              {{ getErrorMessage('email', 'Email') }} </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-div">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Password</mat-label>
+            <input matInput [type]="hide ? 'text' : 'password'" autocomplete="off" formControlName="password">
+            <mat-error *ngIf="!registerForm.controls['password'].valid && registerForm.controls['password'].touched">
+              {{ getErrorMessage('password', 'Password') }} </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-div">
+            <mat-label>Role</mat-label>
+            <mat-radio-group formControlName="role" class="singupas">
+              <mat-radio-button value="student">Student</mat-radio-button>
+              <mat-radio-button value="labmember">Lab Member</mat-radio-button>
+            </mat-radio-group>
+        </div>
+        <div class="button-div" fxLayoutAlign="end end" fxLayout="column">
+          <button mat-button type="submit" class="login-button">Register</button>
+          <span class="reg">Already have an account? <a href="" [routerLink]="['/login']"> Login !</a></span>
+        </div>
+      </div>
+
+    </mat-card>
+  </div>
+</form>
