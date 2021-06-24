@@ -64,6 +64,7 @@ export class ApiService implements HttpInterceptor {
 
   
     assignStatus(payload) {
+        debugger
         return this.http.put(this.urls.assignStatus, payload)
     }
     assignDesc(payload) {
@@ -76,7 +77,7 @@ export class ApiService implements HttpInterceptor {
         return this.http.post(this.urls.assignTicketToLabMember, payload)
     }
     getTicketsByLabMember(payload) {
-        return this.http.get(this.urls.memberTicketsByStatus, payload)
+        return this.http.get(this.urls.memberTicketsByStatus,  { params: payload})
     }
     getCategory() {
         return this.http.get(this.urls.category)

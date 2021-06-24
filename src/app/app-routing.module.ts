@@ -26,11 +26,11 @@ const routes: Routes = [
   },
   {
     path: 'labmember',
-    component: LabMemberComponent,
+    component: LabsquadComponent,
   },
   {
     path: 'labsquad',
-    component: LabsquadComponent,
+    component: LabMemberComponent,
   }
 ];
 

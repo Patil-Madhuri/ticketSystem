@@ -17,6 +17,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import {MatTabsModule} from '@angular/material/tabs';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { MatNativeDateModule } from '@angular/material/core';
         MatTableModule,
         MatSelectModule,
         MatDatepickerModule,
-        MatNativeDateModule
+        MatNativeDateModule,
+        MatTabsModule
     ],
     exports: [
         MatInputModule,
@@ -58,7 +60,8 @@ import { MatNativeDateModule } from '@angular/material/core';
         MatTableModule,
         MatSelectModule,
         MatDatepickerModule,
-        MatNativeDateModule
+        MatNativeDateModule,
+        MatTabsModule
     ]
 })
 
