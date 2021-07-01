@@ -29,7 +29,9 @@ export class ApiService implements HttpInterceptor {
         rejectTask: 'assign/taskreject',
         category: 'category',
         status: 'ticketStatus',
-        getAllStatus: 'ticket/allTicketsByStatus'
+        getAllStatus: 'ticket/allTicketsByStatus',
+        getTicketByStudentId: 'student/ticket',
+        getTimeSlots: 'timeslots'
     };
     get currentDate() {
         return new Date();
@@ -56,15 +58,14 @@ export class ApiService implements HttpInterceptor {
         return this.http.get(this.urls.getTicketById, payload)
     }
     getLabmember(payload) {
-        return this.http.get(this.urls.getLabmember, { params: payload})
+        return this.http.get(this.urls.getLabmember, { params: payload })
     }
     getalltickets() {
         return this.http.get(this.urls.getalltickets)
     }
 
-  
+
     assignStatus(payload) {
-        debugger
         return this.http.put(this.urls.assignStatus, payload)
     }
     assignDesc(payload) {
@@ -77,7 +78,7 @@ export class ApiService implements HttpInterceptor {
         return this.http.post(this.urls.assignTicketToLabMember, payload)
     }
     getTicketsByLabMember(payload) {
-        return this.http.get(this.urls.memberTicketsByStatus,  { params: payload})
+        return this.http.post(this.urls.memberTicketsByStatus, payload)
     }
     getCategory() {
         return this.http.get(this.urls.category)
@@ -86,7 +87,13 @@ export class ApiService implements HttpInterceptor {
         return this.http.get(this.urls.status)
     }
     getAllStatus(payload) {
-        return this.http.get(this.urls.getAllStatus,  { params: payload})
+        return this.http.get(this.urls.getAllStatus, { params: payload })
+    }
+    getTicketByStudentId(payload) {
+        return this.http.get(this.urls.getTicketByStudentId, { params: payload })
+    }
+    getTimeSlots() {
+        return this.http.get(this.urls.getTimeSlots)
     }
 }
 

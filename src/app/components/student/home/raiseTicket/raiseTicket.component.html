@@ -66,8 +66,8 @@
       <mat-form-field style="width: 100%">
         <mat-label>Timeslot</mat-label>
         <mat-select formControlName="timeslot">
-          <mat-option *ngFor="let time of timeSlots" [value]="time">
-            {{time}}
+          <mat-option *ngFor="let time of timeSlots" [value]="time.time" [disabled]="!time.available">
+            {{time.time}}
           </mat-option>
         </mat-select>
       </mat-form-field>

@@ -3,9 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/student/home/home.component';
 import { RegisterComponent } from './components/register/register.component';
-import { LabMemberComponent } from './components/labmember/labmember-screen/labmember.component';
-import { LabsquadComponent } from './components/labsquad/labsquad/labsquad.component';
-
+import { LabmemberComponent } from './components/lab-member/labmember/labmember.component';
+import {  LabSquadComponent } from "./components/labsquad/lab-squad/lab-squad.component";
 const routes: Routes = [
   {
     path: '',
@@ -26,11 +25,11 @@ const routes: Routes = [
   },
   {
     path: 'labmember',
-    component: LabsquadComponent,
+    component: LabmemberComponent,
   },
   {
     path: 'labsquad',
-    component: LabMemberComponent,
+    component: LabSquadComponent,
   }
 ];
 

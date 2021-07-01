@@ -13,33 +13,34 @@ import { ApiService } from 'src/app/shared-modules/api.service';
 export class RaiseTicket implements OnInit {
   masterFormGroup: FormGroup
   isEdit = false;
-  timeSlots = []
+  timeSlots:any = []
   issue_Cat: any = []
   userId:any
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<RaiseTicket>, private fb: FormBuilder,
     private apiService: ApiService, private snackBar: MatSnackBar) {
-    let x = {
-      slotInterval: 5,
-      openTime: '12:00',
-      closeTime: '11:59'
-    };
+    // let x = {
+    //   slotInterval: 5,
+    //   openTime: '12:00',
+    //   closeTime: '11:59'
+    // };
 
-    let startTime = moment(x.openTime, "HH:mm");
-    let endTime = moment(x.closeTime, "HH:mm").add(1, 'days');
-    let allTimes = [];
-    while (startTime < endTime) {
-      allTimes.push(startTime.format("HH:mm"));
-      startTime.add(x.slotInterval, 'minutes');
-    }
-    this.timeSlots = allTimes
-    console.log(allTimes);
+    // let startTime = moment(x.openTime, "HH:mm");
+    // let endTime = moment(x.closeTime, "HH:mm").add(1, 'days');
+    // let allTimes = [];
+    // while (startTime < endTime) {
+    //   allTimes.push(startTime.format("HH:mm"));
+    //   startTime.add(x.slotInterval, 'minutes');
+    // }
+    // this.timeSlots = allTimes
+    // console.log(allTimes);
     this.userId = JSON.parse(localStorage.getItem('user'))
   }
 
   ngOnInit(): void {
     this.formInit();
     this.getCategories()
+    this.getTimeslot();
   }
 
   formInit() {
@@ -62,6 +63,11 @@ export class RaiseTicket implements OnInit {
   getCategories() {
     this.apiService.getCategory().subscribe(res => {
       this.issue_Cat = res
+    })
+  }
+  getTimeslot() {
+    this.apiService.getTimeSlots().subscribe(res => {
+      this.timeSlots = res
     })
   }
   addItem() {

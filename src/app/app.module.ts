@@ -11,19 +11,19 @@ import { ApiService } from 'src/app/shared-modules/api.service';
 import { RegisterComponent } from './components/register/register.component'
 import { HomeComponent } from './components/student/home/home.component';
 import { RaiseTicket } from './components/student/home/raiseTicket/raiseTicket.component';
-import { LabMemberComponent } from './components/labmember/labmember-screen/labmember.component';
-import { ViewAssignTicketComponent } from './components/labmember/view-assign-ticket/view-assign-ticket.component';
-import { LabsquadComponent } from './components/labsquad/labsquad/labsquad.component';
+import { ViewAssignTicketComponent } from './components/labsquad/view-assign-ticket/view-assign-ticket.component';
+import { LabmemberComponent } from './components/lab-member/labmember/labmember.component';
+import { LabSquadComponent } from './components/labsquad/lab-squad/lab-squad.component';
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     HomeComponent,
-    LabMemberComponent,
+    LabmemberComponent,
     RegisterComponent,
     RaiseTicket,
     ViewAssignTicketComponent,
-    LabsquadComponent
+    LabSquadComponent
   ],
   imports: [
     BrowserModule,

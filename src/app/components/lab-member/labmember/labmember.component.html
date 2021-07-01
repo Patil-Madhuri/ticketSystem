@@ -2,8 +2,8 @@
 <div class="home-container">
   <div class="main-container">
     <mat-toolbar>
-      <img src="../../../assets/logo.png" alt="" height="35px">
-      &nbsp;&nbsp;&nbsp;&nbsp;<span>Admin</span>
+      <img src="../../../assets/labsquad.png" alt="" height="40px">
+      &nbsp;&nbsp;&nbsp;&nbsp;
       <span class="example-spacer"></span>
       <div style="display: grid;font-size: 12px;">
         <img src="../../../../assets/user.png" alt="" height="30px" width="30px" style="margin-left: 17%;">
@@ -15,18 +15,20 @@
     </mat-toolbar>
     <div class="main-div">
       <div class="mg-left">
-        <div style="display: flex;">
-          <h4 style="width: 85%;">Today's Date: {{currentDate | date: 'MMMM d, y'}}</h4>
-          <!-- <mat-form-field class="assign" style="width: 10%;">
-            <mat-select (selectionChange)="filterTicket($event)" placeholder="Filter By">
-              <mat-option *ngFor="let item of ticketStatus" [value]="item.id">{{item.title}}</mat-option>
-            </mat-select>
-          </mat-form-field> -->
+        <div>
+          <h4 style="color: white;">Today's Date: {{currentDate | date: 'MMMM d, y'}}</h4>
         </div>
+        <mat-form-field appearance="standard" style="background-color: white;">
+          <mat-label>Filter</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Search" #input>
+        </mat-form-field>
       </div>
 
-      <mat-tab-group mat-align-tabs="start">
-        <mat-tab label="Created">
+      <mat-tab-group mat-align-tabs="start" #tabGroup (selectedTabChange)="tabChanged($event)" style="    background-color: lightgray;">
+        <mat-tab>
+          <ng-template matTabLabel>
+            <span matBadge="{{createdCount}}" matBadgeOverlap="false" matBadgeColor="warn">Created</span>
+          </ng-template>
           <div class="mat-elevation-z8">
             <mat-table [dataSource]="createddataSource">
               <ng-container matColumnDef="srno">
@@ -53,16 +55,21 @@
                     <mat-select (selectionChange)="changeStatus($event,element)" placeholder="Select">
                       <mat-option *ngFor="let item of showStatus" [value]="item.id">{{item.title}}</mat-option>
                     </mat-select>
-                  </mat-form-field>    
-                        <button mat-stroked-button color="primary" (click)="viewAssignTicket(element)">View Details</button>
+                  </mat-form-field>
+                  <button mat-stroked-button color="primary" (click)="viewAssignTicket(element)">View Details</button>
                 </mat-cell>
               </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
               <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
             </mat-table>
           </div>
+          <mat-paginator [length]="createdjsonArray.length" [pageSize]="5" (page)="pageChanged('created',$event)"></mat-paginator>
+
         </mat-tab>
-        <mat-tab label="Pending">
+        <mat-tab>
+          <ng-template matTabLabel>
+            <span matBadge="{{pendingCount}}" matBadgeOverlap="false" matBadgeColor="warn">Pending</span>
+          </ng-template>
           <div class="mat-elevation-z8">
             <mat-table [dataSource]="pendingdataSource">
               <ng-container matColumnDef="srno">
@@ -98,8 +105,12 @@
               <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
             </mat-table>
           </div>
+          <mat-paginator [length]="pendingjsonArray.length" [pageSize]="5" (page)="pageChanged('pending',$event)"></mat-paginator>
         </mat-tab>
-        <mat-tab label="In-Progress">
+        <mat-tab>
+          <ng-template matTabLabel>
+            <span matBadge="{{inprogressCount}}" matBadgeOverlap="false" matBadgeColor="warn">In-Progress</span>
+          </ng-template>
           <div class="mat-elevation-z8">
             <mat-table [dataSource]="inprogressdataSource">
               <ng-container matColumnDef="srno">
@@ -135,8 +146,13 @@
               <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
             </mat-table>
           </div>
+          <mat-paginator [length]="inprogressjsonArray.length" [pageSize]="5" (page)="pageChanged('inprogress',$event)"></mat-paginator>
+
         </mat-tab>
-        <mat-tab label="Closed">
+        <mat-tab>
+          <ng-template matTabLabel>
+            <span matBadge="{{closedCount}}" matBadgeOverlap="false" matBadgeColor="warn">Closed</span>
+          </ng-template>
           <div class="mat-elevation-z8">
             <mat-table [dataSource]="closeddataSource">
               <ng-container matColumnDef="srno">
@@ -165,7 +181,8 @@
                     </mat-select>
                   </mat-form-field> -->
                   Closed
-                  <button mat-stroked-button color="primary" style="margin-left: 2%;" (click)="viewAssignTicket(element)">View Details</button>
+                  <button mat-stroked-button color="primary" style="margin-left: 2%;"
+                    (click)="viewAssignTicket(element)">View Details</button>
 
                 </mat-cell>
               </ng-container>
@@ -173,6 +190,8 @@
               <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
             </mat-table>
           </div>
+          <mat-paginator [length]="closedjsonArray.length" [pageSize]="5" (page)="pageChanged('closed',$event)"></mat-paginator>
+
         </mat-tab>
       </mat-tab-group>
 

@@ -1,0 +1,26 @@
+.example-spacer {
+    flex: 1 1 auto;
+  }
+  
+  
+  .main-div {
+    padding: 10px;
+  }
+  
+  mat-toolbar {
+    background-color: white;
+    color: black;
+  }
+  
+  .mg-left {
+    margin-left: 2%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .assign {
+    width: 50%;
+    margin-right: 5%;
+  }
+  
