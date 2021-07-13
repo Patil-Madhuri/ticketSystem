@@ -63,7 +63,7 @@ export class HomeComponent implements OnInit {
     }
     this.apiService.getTicketByStudentId(postData).subscribe(response => {
       this.jsonArray = response;
-      this.slicedArray = this.jsonArray.slice(0, 5)
+      this.slicedArray = this.jsonArray?.slice(0, 5)
       this.dataSource = new MatTableDataSource<Ticket>(this.slicedArray);
     })
   }
@@ -76,6 +76,8 @@ export class HomeComponent implements OnInit {
     }
   }
   viewAssignTicket(data) {
+    console.log(data);
+    
     const dialog = this.dialog.open(ViewAssignTicketComponent, {
       width: '40%',
       data: data ? data : null,
@@ -91,7 +93,13 @@ export class HomeComponent implements OnInit {
   pageChanged(event) {
     console.log(event);
     console.log(this.slicedArray);
-    this.slicedArray = this.jsonArray.slice(this.slicedArray.length, this.slicedArray.length + 5)
-    this.dataSource = new MatTableDataSource<Ticket>(this.slicedArray);
+    if (event.previousPageIndex > event.pageIndex) {
+      this.slicedArray = this.jsonArray?.slice(0, 5)
+      this.dataSource = new MatTableDataSource<Ticket>(this.slicedArray);
+    } else {
+      this.slicedArray = this.jsonArray.slice(this.slicedArray.length, this.slicedArray.length + 5)
+      this.dataSource = new MatTableDataSource<Ticket>(this.slicedArray);
+    }
+  
   }
 }

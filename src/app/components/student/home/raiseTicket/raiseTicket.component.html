@@ -10,21 +10,21 @@
     </div> -->
     <div>
       <mat-form-field style="width: 100%">
-        <input type="text" matInput placeholder="Student Name" formControlName="name">
+        <input type="text" matInput placeholder="Student Name" formControlName="name" required>
         <mat-error *ngIf="this.masterFormGroup.get('name').invalid">
           Please Enter Valid Name </mat-error>
       </mat-form-field>
     </div>
     <div>
       <mat-form-field style="width: 100%">
-        <input type="text" matInput placeholder="Student Course" formControlName="course">
+        <input type="text" matInput placeholder="Student Course" formControlName="course" required>
         <mat-error *ngIf="this.masterFormGroup.get('course').invalid">
           Please Enter Valid course </mat-error>
       </mat-form-field>
     </div>
     <div>
       <mat-form-field style="width: 100%">
-        <input type="text" matInput placeholder="Subject" formControlName="issue_title">
+        <input type="text" matInput placeholder="Subject" formControlName="issue_title" required>
         <mat-error *ngIf="this.masterFormGroup.get('issue_title').invalid">
           Please Enter Valid Subject </mat-error>
       </mat-form-field>
@@ -37,7 +37,7 @@
       </mat-form-field> -->
       <mat-form-field style="width: 100%">
         <mat-label>Issue Category</mat-label>
-        <mat-select formControlName="issue_category">
+        <mat-select formControlName="issue_category" required>
           <mat-option *ngFor="let cat of issue_Cat" [value]="cat.id">
             {{cat.title}}
           </mat-option>
@@ -47,7 +47,7 @@
     <div>
       <mat-form-field style="width: 100%">
         <textarea matInput rows="1" placeholder="Issue Description" formControlName="issue_description"
-          autocomplete="off">
+          autocomplete="off" required>
                       </textarea>
         <mat-error *ngIf="this.masterFormGroup.get('issue_description').invalid">
           Please Enter Valid Issue Description </mat-error>
@@ -55,7 +55,7 @@
     </div>
     <div>
       <mat-form-field style="width: 100%">
-        <input matInput [matDatepicker]="picker" formControlName="date" required placeholder="Enter date">
+        <input matInput [matDatepicker]="picker" formControlName="date" required placeholder="Enter date" required>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
         <mat-error *ngIf="masterFormGroup.get('date').invalid">
@@ -65,7 +65,7 @@
     <div>
       <mat-form-field style="width: 100%">
         <mat-label>Timeslot</mat-label>
-        <mat-select formControlName="timeslot">
+        <mat-select formControlName="timeslot" required>
           <mat-option *ngFor="let time of timeSlots" [value]="time.time" [disabled]="!time.available">
             {{time.time}}
           </mat-option>

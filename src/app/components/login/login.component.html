@@ -1,4 +1,4 @@
-<form [formGroup]="loginForm" (submit)="login()">
+<form [formGroup]="loginForm" (submit)="login()" style="background-image: url('./assets/bg.jpeg');background-size: cover;">
     <div fxFlex=100 fxLayout="row" fxLayoutAlign="center center" style="height: 100vh;">
         <mat-card fxFlex="center space-around" class="login-card" fxFlex="520px">
             <div fxLayout="column" fxLayoutAlign="center center">
@@ -6,7 +6,7 @@
                 <div class="form-div">
                     <mat-form-field appearance="outline" class="form-field">
                         <mat-label>Email</mat-label>
-                        <input matInput autocomplete="off" formControlName="email" >
+                        <input matInput autocomplete="off" formControlName="email" required>
                         <mat-error *ngIf="!loginForm.controls['email'].valid && loginForm.controls['email'].touched">
                             {{ getErrorMessage('email', 'Email') }} </mat-error>
                     </mat-form-field>
@@ -14,7 +14,7 @@
                 <div class="form-div">
                     <mat-form-field appearance="outline" class="form-field">
                         <mat-label>Password</mat-label>
-                        <input matInput [type]="hide ? 'text' : 'password'" autocomplete="off" formControlName="password" >
+                        <input matInput [type]="hide ? 'text' : 'password'" autocomplete="off" formControlName="password" required>
                         <mat-error
                             *ngIf="!loginForm.controls['password'].valid && loginForm.controls['password'].touched">
                             {{ getErrorMessage('password', 'Password') }} </mat-error>
@@ -23,6 +23,7 @@
                 <div class="button-div" fxLayoutAlign="end end" fxLayout="column">
                     <button mat-button type="submit" class="login-button" >Login</button>
                     <span class="reg">Don't have an account? <a href="" [routerLink]="['/register']"> Get Started !</a></span>
+                    <!-- <span class="reg"><a href="" [routerLink]="['/forgotpassword']"> Forgot Password ? </a></span> -->
                 </div>
             </div>
 

@@ -33,7 +33,7 @@
     </mat-form-field>
   </div>
 
-  <mat-form-field class="assign" style="width: 100%;" *ngIf="userId.role == 'testlableader'">
+  <mat-form-field class="assign" style="width: 100%;" *ngIf="userId.role == 'lableader' || userId.role == 'labmember'">
     <mat-select (selectionChange)="setAssignTo($event)" placeholder="Select">
       <mat-option *ngFor="let item of supportMember" [value]="item.id">{{item.name}}</mat-option>
     </mat-select>
@@ -41,7 +41,7 @@
 
 </div>
 <div mat-dialog-actions class="right">
-  <button mat-raised-button (click)="assignTicket()" *ngIf="userId.role == 'testlableader'">
+  <button mat-raised-button (click)="assignTicket()" *ngIf="userId.role == 'lableader' || userId.role == 'labmember'">
     <span>Assign</span>
   </button>
   <button mat-raised-button type="button" (click)="closeForm(true)">

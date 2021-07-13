@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/shared-modules/api.service';
-
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  selector: 'app-forgot-password',
+  templateUrl: './forgot-password.component.html',
+  styleUrls: ['./forgot-password.component.scss']
 })
-export class RegisterComponent implements OnInit {
-  registerForm: FormGroup;
+export class ForgotPasswordComponent implements OnInit {
+  loginForm: FormGroup;
   hide;
   constructor(
     private formBuilder: FormBuilder,
@@ -23,16 +22,13 @@ export class RegisterComponent implements OnInit {
     this.formInit();
   }
   formInit() {
-    this.registerForm = this.formBuilder.group({
-      name: ['', Validators.compose([Validators.pattern('[a-zA-Z ]*'), Validators.required])],
+    this.loginForm = this.formBuilder.group({
       email: ['', Validators.compose([Validators.pattern('^[A-Za-z0-9._%+-]+@fanshaweonline.ca$'), Validators.required])],
-      password: ['', Validators.compose([Validators.required, Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$')])],
-      role: ['', Validators.required]
-    })
+      })
   }
 
   getErrorMessage(controlName: string, alias: string) {
-    const control = this.registerForm.controls[controlName];
+    const control = this.loginForm.controls[controlName];
 
     if (control.errors) {
       if (control.errors.required) {
@@ -55,19 +51,31 @@ export class RegisterComponent implements OnInit {
       }
     }
   }
-  register() {
-    if (this.registerForm.valid) {
-      this.apiService.register(this.registerForm.value).subscribe(response => {
-        this.snackBar.open("Your account created successfully", '', {
-          duration: 2000,
-        });
-        this.router.navigate(['login'])
-      })
-    } else {
-      this.snackBar.open("Please enter valid signup details", '', {
-        duration: 2000,
-      });
-    }
+  login() {
+    let postData = this.loginForm.value
+    // if (this.loginForm.valid) {
+    //   this.apiService.login(postData).subscribe(response => {
+    //     localStorage.setItem('user', JSON.stringify(response))
+    //     if (response['role'] == 'student') {
+    //       this.router.navigate(['shome'])
+    //     } else if (response['role'] == 'labmember') {
+    //       this.router.navigate(['labmember'])
+    //     } else if(response['role'] == 'testlableader') {
+    //       this.router.navigate(['labsquad'])
+    //     } 
+    //     if(response['error']) {
+    //       this.snackBar.open("Please enter valid login details", '', {
+    //         duration: 2000,
+    //       });
+    //     }
+    //   }, error => {
+    //     console.log(error);
+    //   })
+    // } else {
+    //   this.snackBar.open("Please enter valid login details", '', {
+    //     duration: 2000,
+    //   });
+    // }
 
   }
 }

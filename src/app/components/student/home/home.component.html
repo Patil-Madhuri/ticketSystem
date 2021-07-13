@@ -15,15 +15,21 @@
     </mat-toolbar>
     <div class="main-div">
       <div class="center-align">
-        <div fxFlex="75">
-          <h4 style="color: white;">Today's Date: {{currentDate | date: 'MMMM d, y'}}</h4>
+        <div fxFlex="70">
+          <h4>Today's Date: {{currentDate | date: 'MMMM d, y'}}</h4>
         </div>
-        <button mat-button class="bg-red" style="margin-right: 2%;" (click)="RaiseTicket()">Raise Ticket</button>
 
-        <mat-form-field appearance="standard" style="background-color: white;">
+        <!-- <mat-form-field appearance="standard" style="margin-right: 2%;">
           <mat-label>Filter</mat-label>
           <input matInput (keyup)="applyFilter($event)" placeholder="Search" #input>
-        </mat-form-field>
+        </mat-form-field> -->
+        <div class="search-container">
+          <form>
+            <input class="searchinput" (keyup)="applyFilter($event)"  type="text" placeholder="Search.." name="search">
+            <button type="submit"><mat-icon>search</mat-icon></button>
+          </form>
+        </div>
+        <button mat-button class="bg-red" (click)="RaiseTicket()">Raise Ticket</button>
       </div>
 
 

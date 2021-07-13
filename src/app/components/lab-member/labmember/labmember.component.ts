@@ -69,7 +69,7 @@ export class LabmemberComponent implements OnInit {
       data: data ? data : null,
     });
     dialog.afterClosed().subscribe(res => {
-      console.log("res", res);
+     this.getCreatedTickets();
     })
   }
 

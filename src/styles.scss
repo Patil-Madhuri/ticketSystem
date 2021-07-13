@@ -13,3 +13,24 @@ body {
   background-color: #E41F20;
   color: white;
 }
+ .search-container {
+  float: right;
+}
+
+ .searchinput {
+  padding: 6px;
+  margin-top: 8px;
+  font-size: 17px;
+  border: none;
+}
+
+ .search-container button {
+  float: right;
+  // padding: 6px 10px;
+  margin-top: 8px;
+  margin-right: 16px;
+  background: #ddd;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+}

@@ -16,12 +16,18 @@
     <div class="main-div">
       <div class="mg-left">
         <div>
-          <h4 style="color: white;">Today's Date: {{currentDate | date: 'MMMM d, y'}}</h4>
+          <h4>Today's Date: {{currentDate | date: 'MMMM d, y'}}</h4>
         </div>
-        <mat-form-field appearance="standard" style="background-color: white;">
+        <!-- <mat-form-field appearance="standard" style="background-color: white;">
           <mat-label>Filter</mat-label>
           <input matInput (keyup)="applyFilter($event)" placeholder="Search" #input>
-        </mat-form-field>
+        </mat-form-field> -->
+        <div class="search-container">
+          <form>
+            <input class="searchinput" (keyup)="applyFilter($event)"  type="text" placeholder="Search.." name="search">
+            <button type="submit"><mat-icon>search</mat-icon></button>
+          </form>
+        </div>
       </div>
 
       <mat-tab-group mat-align-tabs="start" #tabGroup (selectedTabChange)="tabChanged($event)" style="    background-color: lightgray;">
@@ -57,6 +63,7 @@
                     </mat-select>
                   </mat-form-field>
                   <button mat-stroked-button color="primary" (click)="viewAssignTicket(element)">View Details</button>
+                  <button mat-stroked-button color="primary" style="margin-left: 1%;" (click)="viewAssignTicket(element)">Assign</button>
                 </mat-cell>
               </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

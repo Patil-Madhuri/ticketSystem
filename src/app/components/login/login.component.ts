@@ -24,8 +24,8 @@ export class LoginComponent implements OnInit {
   }
   formInit() {
     this.loginForm = this.formBuilder.group({
-      email: ['', Validators.compose([Validators.pattern('^([a-zA-Z0-9][.-]?)+@([a-zA-Z0-9]+[.-]?)*[a-zA-Z0-9][.][a-zA-Z]{2,3}$'), Validators.required])],
-      password: ['', Validators.compose([Validators.required])]
+      email: ['', Validators.compose([Validators.pattern('^[A-Za-z0-9._%+-]+@fanshaweonline.ca$'), Validators.required])],
+      password: ['', Validators.compose([Validators.required, Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$')])]
     })
   }
 
@@ -62,8 +62,15 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['shome'])
         } else if (response['role'] == 'labmember') {
           this.router.navigate(['labmember'])
-        } else if(response['role'] == 'testlableader') {
+        } else if (response['role'] == 'lableader') {
           this.router.navigate(['labsquad'])
+        } else if (response['role'] == 'admin') {
+          this.router.navigate(['admin'])
+        }
+        if (response['error']) {
+          this.snackBar.open("Please enter valid login details", '', {
+            duration: 2000,
+          });
         }
       }, error => {
         console.log(error);

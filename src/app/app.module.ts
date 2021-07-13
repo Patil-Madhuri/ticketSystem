@@ -14,6 +14,8 @@ import { RaiseTicket } from './components/student/home/raiseTicket/raiseTicket.c
 import { ViewAssignTicketComponent } from './components/labsquad/view-assign-ticket/view-assign-ticket.component';
 import { LabmemberComponent } from './components/lab-member/labmember/labmember.component';
 import { LabSquadComponent } from './components/labsquad/lab-squad/lab-squad.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { AdminHomeComponent } from './components/admin/admin-home/admin-home.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,7 +25,9 @@ import { LabSquadComponent } from './components/labsquad/lab-squad/lab-squad.com
     RegisterComponent,
     RaiseTicket,
     ViewAssignTicketComponent,
-    LabSquadComponent
+    LabSquadComponent,
+    ForgotPasswordComponent,
+    AdminHomeComponent
   ],
   imports: [
     BrowserModule,

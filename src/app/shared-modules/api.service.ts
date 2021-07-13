@@ -31,7 +31,8 @@ export class ApiService implements HttpInterceptor {
         status: 'ticketStatus',
         getAllStatus: 'ticket/allTicketsByStatus',
         getTicketByStudentId: 'student/ticket',
-        getTimeSlots: 'timeslots'
+        getTimeSlots: 'timeslots',
+        makeLeader: 'userRoleChange'
     };
     get currentDate() {
         return new Date();
@@ -67,6 +68,9 @@ export class ApiService implements HttpInterceptor {
 
     assignStatus(payload) {
         return this.http.put(this.urls.assignStatus, payload)
+    }
+    makeLeader(payload) {
+        return this.http.put(this.urls.makeLeader, payload)
     }
     assignDesc(payload) {
         return this.http.post(this.urls.assignDesc, payload)

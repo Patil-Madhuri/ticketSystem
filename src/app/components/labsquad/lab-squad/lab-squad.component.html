@@ -16,12 +16,18 @@
     <div class="main-div">
       <div class="mg-left">
         <div>
-          <h4 style="color: white;">Today's Date: {{currentDate | date: 'MMMM d, y'}}</h4>
+          <h4>Today's Date: {{currentDate | date: 'MMMM d, y'}}</h4>
         </div>
-        <mat-form-field appearance="standard" style="background-color: white;">
+        <!-- <mat-form-field appearance="standard" style="background-color: white;">
           <mat-label>Filter</mat-label>
           <input matInput (keyup)="applyFilter($event)" placeholder="Search" #input>
-        </mat-form-field>
+        </mat-form-field> -->
+        <div class="search-container">
+          <form>
+            <input class="searchinput" (keyup)="applyFilter($event)"  type="text" placeholder="Search.." name="search">
+            <button type="submit"><mat-icon>search</mat-icon></button>
+          </form>
+        </div>
       </div>
 
 
