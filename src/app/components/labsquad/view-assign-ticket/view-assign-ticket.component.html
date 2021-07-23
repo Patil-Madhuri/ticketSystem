@@ -2,12 +2,12 @@
 <div mat-dialog-content>
   <div>
     <mat-form-field style="width: 100%">
-      <input type="text" matInput placeholder="Student ID" readonly [(ngModel)]="data.id">
+      <input type="text" matInput placeholder="Student Name" readonly [(ngModel)]="data.name">
     </mat-form-field>
   </div>
   <div>
     <mat-form-field style="width: 100%">
-      <input type="text" matInput placeholder="Course" readonly [(ngModel)]="data.course">
+      <input type="text" matInput placeholder="Program" readonly [(ngModel)]="data.course">
     </mat-form-field>
   </div>
   <div>
@@ -29,11 +29,11 @@
   </div>
   <div>
     <mat-form-field style="width: 100%">
-      <input type="text" matInput placeholder="Timeslot" readonly [(ngModel)]="data.timeslot">
+      <input type="text" matInput placeholder="Timeslot" readonly [(ngModel)]="data.timeslot[0].time">
     </mat-form-field>
   </div>
 
-  <mat-form-field class="assign" style="width: 100%;" *ngIf="userId.role == 'lableader' || userId.role == 'labmember'">
+  <mat-form-field class="assign" style="width: 100%;" *ngIf="userId.role == 'lableader' || userId.role == 'labmember' && data.status != 'closed'">
     <mat-select (selectionChange)="setAssignTo($event)" placeholder="Select">
       <mat-option *ngFor="let item of supportMember" [value]="item.id">{{item.name}}</mat-option>
     </mat-select>
@@ -41,7 +41,7 @@
 
 </div>
 <div mat-dialog-actions class="right">
-  <button mat-raised-button (click)="assignTicket()" *ngIf="userId.role == 'lableader' || userId.role == 'labmember'">
+  <button mat-raised-button (click)="assignTicket()" *ngIf="userId.role == 'lableader' || userId.role == 'labmember' && data.status != 'closed'">
     <span>Assign</span>
   </button>
   <button mat-raised-button type="button" (click)="closeForm(true)">

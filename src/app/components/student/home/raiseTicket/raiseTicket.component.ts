@@ -72,6 +72,7 @@ export class RaiseTicket implements OnInit {
   }
   addItem() {
     console.log(this.masterFormGroup.value);
+    this.masterFormGroup.value.date = moment(this.masterFormGroup.value.date).format('YYYY-MM-DD')
     if (this.masterFormGroup.valid) {
       this.apiService.raiseTicket(this.masterFormGroup.value).subscribe(response => {
         this.snackBar.open("Ticket raised successfully", '', {

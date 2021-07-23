@@ -7,6 +7,9 @@ import { RaiseTicket } from './raiseTicket/raiseTicket.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { ViewAssignTicketComponent } from '../../labsquad/view-assign-ticket/view-assign-ticket.component';
 import { MatPaginator } from '@angular/material/paginator';
+import Swal from 'sweetalert2'
+import { MatSort, Sort } from '@angular/material/sort';
+
 export interface Ticket {
   summary: string;
   raisedBy: string;
@@ -27,6 +30,7 @@ export class HomeComponent implements OnInit {
   displayedColumns: string[] = ['srno', 'date', 'summary', 'view'];
   dataSource = new MatTableDataSource<Ticket>(this.jsonArray);
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(private router: Router,
     private apiService: ApiService,
@@ -40,11 +44,13 @@ export class HomeComponent implements OnInit {
     this.getAllTickets();
     setTimeout(() => {
       this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     })
   }
   ngOnChanges(changes: SimpleChange) {
     setTimeout(() => {
       this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     })
   }
   RaiseTicket(data?) {
@@ -75,9 +81,30 @@ export class HomeComponent implements OnInit {
       this.dataSource.paginator.firstPage()
     }
   }
+  cancelTicket(object) {
+    console.log(object);
+
+    Swal.fire({
+      text: 'Are you sure you want to cancel this ticket ?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, cancel it!',
+      cancelButtonText: 'No, keep it'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let postdata=  {
+          ticket_id: object.id
+        }
+        this.apiService.cancelTicket(postdata).subscribe(res=> {
+          this.snackBar.open("Ticket cancelled successfully", '', {
+            duration: 2000,
+          });
+          this.getAllTickets()
+        })
+      }
+    })
+  }
   viewAssignTicket(data) {
-    console.log(data);
-    
     const dialog = this.dialog.open(ViewAssignTicketComponent, {
       width: '40%',
       data: data ? data : null,
@@ -100,6 +127,60 @@ export class HomeComponent implements OnInit {
       this.slicedArray = this.jsonArray.slice(this.slicedArray.length, this.slicedArray.length + 5)
       this.dataSource = new MatTableDataSource<Ticket>(this.slicedArray);
     }
-  
+
   }
+  sortData(sort: Sort) {
+    const data = this.jsonArray.slice();
+    if (!sort.active || sort.direction === '') {
+      this.jsonArray = data;
+      return;
+    }
+
+    this.jsonArray = data.sort((a, b) => {
+      switch (sort.active) {
+        case 'srno':
+          if (sort.direction == 'asc') {
+            this.dataSource = new MatTableDataSource<Ticket>(this.slicedArray.sort(function (a, b) {
+              if (a.ticket_id === b.ticket_id) {
+                return 0;
+              }
+              if (typeof a.ticket_id === typeof b.ticket_id) {
+                return a.ticket_id < b.ticket_id ? -1 : 1;
+              }
+              return typeof a.ticket_id < typeof b.ticket_id ? -1 : 1;
+            }));
+          } else {
+            this.dataSource = new MatTableDataSource<Ticket>(this.slicedArray.sort(function (a, b) {
+              if (a.ticket_id === b.ticket_id) {
+                return 0;
+              }
+              if (typeof a.ticket_id === typeof b.ticket_id) {
+                return a.ticket_id > b.ticket_id ? -1 : 1;
+              }
+              return typeof a.ticket_id > typeof b.ticket_id ? -1 : 1;
+            }));
+          }
+          break;
+        case 'date':
+          if (sort.direction == 'asc') {
+            this.dataSource = new MatTableDataSource<Ticket>(this.slicedArray.sort(function (a, b) {
+              return (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0);
+            }));
+          } else {
+            this.dataSource = new MatTableDataSource<Ticket>(this.slicedArray.sort(function (a, b) {
+              return (a.date < b.date) ? 1 : ((b.date < a.date) ? -1 : 0);
+            }));
+          }
+          break;
+        case 'summary':
+          if (sort.direction == 'asc') {
+            this.dataSource = new MatTableDataSource<Ticket>(this.slicedArray.sort((one, two) => (one.issue_title < two.issue_title ? -1 : 1)));
+          } else {
+            this.dataSource = new MatTableDataSource<Ticket>(this.slicedArray.sort((one, two) => (one.issue_title > two.issue_title ? -1 : 1)));
+          }
+          break;
+      }
+    });
+  }
+
 }

@@ -32,7 +32,7 @@
 
 
       <div class="mat-elevation-z8">
-        <mat-table [dataSource]="dataSource" matSort>
+        <mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
           <ng-container matColumnDef="srno">
             <mat-header-cell *matHeaderCellDef mat-sort-header>Ticket ID</mat-header-cell>
             <mat-cell *matCellDef="let element;let i = index"> {{element.ticket_id}}

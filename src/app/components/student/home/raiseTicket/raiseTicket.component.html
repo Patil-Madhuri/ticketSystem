@@ -17,7 +17,7 @@
     </div>
     <div>
       <mat-form-field style="width: 100%">
-        <input type="text" matInput placeholder="Student Course" formControlName="course" required>
+        <input type="text" matInput placeholder="Student Program" formControlName="course" required>
         <mat-error *ngIf="this.masterFormGroup.get('course').invalid">
           Please Enter Valid course </mat-error>
       </mat-form-field>
@@ -65,8 +65,8 @@
     <div>
       <mat-form-field style="width: 100%">
         <mat-label>Timeslot</mat-label>
-        <mat-select formControlName="timeslot" required>
-          <mat-option *ngFor="let time of timeSlots" [value]="time.time" [disabled]="!time.available">
+        <mat-select formControlName="timeslot" multiple required>
+          <mat-option *ngFor="let time of timeSlots"  [value]="time.id" [disabled]="time.reserved">
             {{time.time}}
           </mat-option>
         </mat-select>

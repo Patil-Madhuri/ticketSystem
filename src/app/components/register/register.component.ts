@@ -25,6 +25,7 @@ export class RegisterComponent implements OnInit {
   formInit() {
     this.registerForm = this.formBuilder.group({
       name: ['', Validators.compose([Validators.pattern('[a-zA-Z ]*'), Validators.required])],
+      // email: ['', Validators.compose([Validators.required])],
       email: ['', Validators.compose([Validators.pattern('^[A-Za-z0-9._%+-]+@fanshaweonline.ca$'), Validators.required])],
       password: ['', Validators.compose([Validators.required, Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$')])],
       role: ['', Validators.required]
@@ -62,6 +63,17 @@ export class RegisterComponent implements OnInit {
           duration: 2000,
         });
         this.router.navigate(['login'])
+      }, error => {
+        console.log("error", error);
+        if (error.status == 500) {
+          this.snackBar.open("Please enter valid signup details", '', {
+            duration: 2000,
+          });
+        } else if(error.status == 422){
+          this.snackBar.open("Email already exist, Try with different email", '', {
+            duration: 2000,
+          });
+        }
       })
     } else {
       this.snackBar.open("Please enter valid signup details", '', {

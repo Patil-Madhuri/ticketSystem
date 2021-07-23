@@ -8,7 +8,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ViewAssignTicketComponent } from '../view-assign-ticket/view-assign-ticket.component';
 import { ApiService } from 'src/app/shared-modules/api.service';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 
 export interface Ticket {
   summary: string;
@@ -84,5 +84,58 @@ export class LabSquadComponent implements OnInit {
     console.log(this.slicedArray);
     this.slicedArray = this.jsonArray.slice(this.slicedArray.length, this.slicedArray.length + 5)
     this.dataSource = new MatTableDataSource<Ticket>(this.slicedArray);
+  }
+  sortData(sort: Sort) {
+    const data = this.jsonArray.slice();
+    if (!sort.active || sort.direction === '') {
+      this.jsonArray = data;
+      return;
+    }
+
+    this.jsonArray = data.sort((a, b) => {
+      switch (sort.active) {
+        case 'srno':
+          if (sort.direction == 'asc') {
+            this.dataSource = new MatTableDataSource<Ticket>(this.slicedArray.sort(function (a, b) {
+              if (a.ticket_id === b.ticket_id) {
+                return 0;
+              }
+              if (typeof a.ticket_id === typeof b.ticket_id) {
+                return a.ticket_id < b.ticket_id ? -1 : 1;
+              }
+              return typeof a.ticket_id < typeof b.ticket_id ? -1 : 1;
+            }));
+          } else {
+            this.dataSource = new MatTableDataSource<Ticket>(this.slicedArray.sort(function (a, b) {
+              if (a.ticket_id === b.ticket_id) {
+                return 0;
+              }
+              if (typeof a.ticket_id === typeof b.ticket_id) {
+                return a.ticket_id > b.ticket_id ? -1 : 1;
+              }
+              return typeof a.ticket_id > typeof b.ticket_id ? -1 : 1;
+            }));
+          }
+          break;
+        case 'date':
+          if (sort.direction == 'asc') {
+            this.dataSource = new MatTableDataSource<Ticket>(this.slicedArray.sort(function (a, b) {
+              return (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0);
+            }));
+          } else {
+            this.dataSource = new MatTableDataSource<Ticket>(this.slicedArray.sort(function (a, b) {
+              return (a.date < b.date) ? 1 : ((b.date < a.date) ? -1 : 0);
+            }));
+          }
+          break;
+        case 'summary':
+          if (sort.direction == 'asc') {
+            this.dataSource = new MatTableDataSource<Ticket>(this.slicedArray.sort((one, two) => (one.issue_title < two.issue_title ? -1 : 1)));
+          } else {
+            this.dataSource = new MatTableDataSource<Ticket>(this.slicedArray.sort((one, two) => (one.issue_title > two.issue_title ? -1 : 1)));
+          }
+          break;
+      }
+    });
   }
 }

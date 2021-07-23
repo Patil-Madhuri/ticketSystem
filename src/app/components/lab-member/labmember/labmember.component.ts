@@ -3,10 +3,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/shared-modules/api.service';
+import Swal from 'sweetalert2';
 import { ViewAssignTicketComponent } from '../../labsquad/view-assign-ticket/view-assign-ticket.component';
 import { Ticket } from '../../student/home/home.component';
 
@@ -36,7 +38,10 @@ export class LabmemberComponent implements OnInit {
   pendingdataSource = new MatTableDataSource<Ticket>(this.pendingjsonArray);
   inprogressdataSource = new MatTableDataSource<Ticket>(this.inprogressjsonArray);
   closeddataSource = new MatTableDataSource<Ticket>(this.closedjsonArray);
-
+  @ViewChild('createdSort') public createdSort: MatSort;
+  @ViewChild('pendingSort') public pendingSort: MatSort;
+  @ViewChild('inprogressSort') public inprogressSort: MatSort;
+  @ViewChild('closedsort') public closedsort: MatSort;
   createdCount = 0;
   pendingCount = 0;
   inprogressCount = 0;
@@ -55,11 +60,17 @@ export class LabmemberComponent implements OnInit {
     this.getPendingTickets();
     this.getInprogressTickets();
     this.getClosedTickets();
+    this.applyFilterOn = 'created'
+
     setTimeout(() => {
       this.createddataSource.paginator = this.createdPaginator;
+      this.createddataSource.sort = this.createdSort;
       this.pendingdataSource.paginator = this.pendingPaginator;
+      this.pendingdataSource.sort = this.pendingSort;
       this.inprogressdataSource.paginator = this.inprogressPaginator;
+      this.inprogressdataSource.sort = this.inprogressSort;
       this.closeddataSource.paginator = this.closedPaginator;
+      this.closeddataSource.sort = this.closedsort;
     })
   }
 
@@ -69,7 +80,7 @@ export class LabmemberComponent implements OnInit {
       data: data ? data : null,
     });
     dialog.afterClosed().subscribe(res => {
-     this.getCreatedTickets();
+      this.getCreatedTickets();
     })
   }
 
@@ -79,7 +90,6 @@ export class LabmemberComponent implements OnInit {
       "status": 1
     }
     this.apiService.getTicketsByLabMember(postData).subscribe(response => {
-      console.log(response);
       this.createdjsonArray = response['data'];
       this.slicedcreatedjsonArray = this.createdjsonArray?.slice(0, 5)
       this.createddataSource = new MatTableDataSource<Ticket>(this.slicedcreatedjsonArray);
@@ -129,8 +139,8 @@ export class LabmemberComponent implements OnInit {
     }
     this.apiService.getTicketsByLabMember(postData).subscribe(response => {
       this.closedjsonArray = response['data'];
-      this.slicedcreatedjsonArray = this.closedjsonArray?.slice(0, 5)
-      this.closeddataSource = new MatTableDataSource<Ticket>(this.slicedcreatedjsonArray);
+      this.slicedclosedjsonArray = this.closedjsonArray?.slice(0, 5)
+      this.closeddataSource = new MatTableDataSource<Ticket>(this.slicedclosedjsonArray);
       this.closedCount = response['count'];
       if (response['message']) {
         this.closedCount = 0;
@@ -210,15 +220,40 @@ export class LabmemberComponent implements OnInit {
       "ticket_id": ticket.id,
       "status": status.value
     }
-    this.apiService.assignStatus(postdata).subscribe(res => {
-      this.snackBar.open("Status changed successfully", '', {
-        duration: 2000,
-      });
-      this.getCreatedTickets();
-      this.getPendingTickets();
-      this.getInprogressTickets();
-      this.getClosedTickets();
-    })
+    if (status.value == 4) {
+      Swal.fire({
+        text: 'Are you sure you want to close this ticket ?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, close it!',
+        cancelButtonText: 'No, keep it'
+      }).then((result) => {
+        console.log(result);
+        if (result.isConfirmed) {
+          this.apiService.assignStatus(postdata).subscribe(res => {
+            this.snackBar.open("Status changed successfully", '', {
+              duration: 2000,
+            });
+
+          })
+          this.getCreatedTickets();
+          this.getPendingTickets();
+          this.getInprogressTickets();
+        }
+    
+      })
+
+    } else {
+      this.apiService.assignStatus(postdata).subscribe(res => {
+        this.snackBar.open("Status changed successfully", '', {
+          duration: 2000,
+        });
+        this.getCreatedTickets();
+        this.getPendingTickets();
+        this.getInprogressTickets();
+        this.getClosedTickets();
+      })
+    }
   }
   redirectTo() {
     this.router.navigate(['/login'])
@@ -247,5 +282,195 @@ export class LabmemberComponent implements OnInit {
       default:
         break;
     }
+  }
+
+  sortDataCreated(sort: Sort) {
+    const data = this.createdjsonArray.slice();
+    if (!sort.active || sort.direction === '') {
+      this.createdjsonArray = data;
+      return;
+    }
+
+    this.createdjsonArray = data.sort((a, b) => {
+      switch (sort.active) {
+        case 'date':
+          if (sort.direction == 'asc') {
+            this.createddataSource = new MatTableDataSource<Ticket>(this.slicedcreatedjsonArray.sort(function (a, b) {
+              return (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0);
+            }));
+          } else {
+            this.createddataSource = new MatTableDataSource<Ticket>(this.slicedcreatedjsonArray.sort(function (a, b) {
+              return (a.date < b.date) ? 1 : ((b.date < a.date) ? -1 : 0);
+            }));
+          }
+          break;
+        case 'summary':
+          if (sort.direction == 'asc') {
+            this.createddataSource = new MatTableDataSource<Ticket>(this.slicedcreatedjsonArray.sort((one, two) => (one.issue_title < two.issue_title ? -1 : 1)));
+          } else {
+            this.createddataSource = new MatTableDataSource<Ticket>(this.slicedcreatedjsonArray.sort((one, two) => (one.issue_title > two.issue_title ? -1 : 1)));
+          }
+          break;
+      }
+    });
+  }
+  sortDataPending(sort: Sort) {
+    const data = this.slicedpendingjsonArray.slice();
+    if (!sort.active || sort.direction === '') {
+      this.slicedpendingjsonArray = data;
+      return;
+    }
+
+    this.slicedpendingjsonArray = data.sort((a, b) => {
+      switch (sort.active) {
+        case 'srno':
+          if (sort.direction == 'asc') {
+            this.pendingdataSource = new MatTableDataSource<Ticket>(this.slicedpendingjsonArray.sort(function (a, b) {
+              if (a.ticket_id === b.ticket_id) {
+                return 0;
+              }
+              if (typeof a.ticket_id === typeof b.ticket_id) {
+                return a.ticket_id < b.ticket_id ? -1 : 1;
+              }
+              return typeof a.ticket_id < typeof b.ticket_id ? -1 : 1;
+            }));
+          } else {
+            this.pendingdataSource = new MatTableDataSource<Ticket>(this.slicedpendingjsonArray.sort(function (a, b) {
+              if (a.ticket_id === b.ticket_id) {
+                return 0;
+              }
+              if (typeof a.ticket_id === typeof b.ticket_id) {
+                return a.ticket_id > b.ticket_id ? -1 : 1;
+              }
+              return typeof a.ticket_id > typeof b.ticket_id ? -1 : 1;
+            }));
+          }
+          break;
+        case 'date':
+          if (sort.direction == 'asc') {
+            this.pendingdataSource = new MatTableDataSource<Ticket>(this.slicedpendingjsonArray.sort(function (a, b) {
+              return (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0);
+            }));
+          } else {
+            this.pendingdataSource = new MatTableDataSource<Ticket>(this.slicedpendingjsonArray.sort(function (a, b) {
+              return (a.date < b.date) ? 1 : ((b.date < a.date) ? -1 : 0);
+            }));
+          }
+          break;
+        case 'summary':
+          if (sort.direction == 'asc') {
+            this.pendingdataSource = new MatTableDataSource<Ticket>(this.slicedpendingjsonArray.sort((one, two) => (one.issue_title < two.issue_title ? -1 : 1)));
+          } else {
+            this.pendingdataSource = new MatTableDataSource<Ticket>(this.slicedpendingjsonArray.sort((one, two) => (one.issue_title > two.issue_title ? -1 : 1)));
+          }
+          break;
+      }
+    });
+  }
+  sortDataInProgress(sort: Sort) {
+    const data = this.slicedinprogressjsonArray.slice();
+    if (!sort.active || sort.direction === '') {
+      this.slicedinprogressjsonArray = data;
+      return;
+    }
+
+    this.slicedinprogressjsonArray = data.sort((a, b) => {
+      switch (sort.active) {
+        case 'srno':
+          if (sort.direction == 'asc') {
+            this.inprogressdataSource = new MatTableDataSource<Ticket>(this.slicedinprogressjsonArray.sort(function (a, b) {
+              if (a.ticket_id === b.ticket_id) {
+                return 0;
+              }
+              if (typeof a.ticket_id === typeof b.ticket_id) {
+                return a.ticket_id < b.ticket_id ? -1 : 1;
+              }
+              return typeof a.ticket_id < typeof b.ticket_id ? -1 : 1;
+            }));
+          } else {
+            this.inprogressdataSource = new MatTableDataSource<Ticket>(this.slicedinprogressjsonArray.sort(function (a, b) {
+              if (a.ticket_id === b.ticket_id) {
+                return 0;
+              }
+              if (typeof a.ticket_id === typeof b.ticket_id) {
+                return a.ticket_id > b.ticket_id ? -1 : 1;
+              }
+              return typeof a.ticket_id > typeof b.ticket_id ? -1 : 1;
+            }));
+          }
+          break;
+        case 'date':
+          if (sort.direction == 'asc') {
+            this.inprogressdataSource = new MatTableDataSource<Ticket>(this.slicedinprogressjsonArray.sort(function (a, b) {
+              return (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0);
+            }));
+          } else {
+            this.inprogressdataSource = new MatTableDataSource<Ticket>(this.slicedinprogressjsonArray.sort(function (a, b) {
+              return (a.date < b.date) ? 1 : ((b.date < a.date) ? -1 : 0);
+            }));
+          }
+          break;
+        case 'summary':
+          if (sort.direction == 'asc') {
+            this.inprogressdataSource = new MatTableDataSource<Ticket>(this.slicedinprogressjsonArray.sort((one, two) => (one.issue_title < two.issue_title ? -1 : 1)));
+          } else {
+            this.inprogressdataSource = new MatTableDataSource<Ticket>(this.slicedinprogressjsonArray.sort((one, two) => (one.issue_title > two.issue_title ? -1 : 1)));
+          }
+          break;
+      }
+    });
+  }
+  sortDataClosed(sort: Sort) {
+    const data = this.slicedclosedjsonArray.slice();
+    if (!sort.active || sort.direction === '') {
+      this.slicedclosedjsonArray = data;
+      return;
+    }
+
+    this.slicedclosedjsonArray = data.sort((a, b) => {
+      switch (sort.active) {
+        case 'srno':
+          if (sort.direction == 'asc') {
+            this.closeddataSource = new MatTableDataSource<Ticket>(this.slicedclosedjsonArray.sort(function (a, b) {
+              if (a.ticket_id === b.ticket_id) {
+                return 0;
+              }
+              if (typeof a.ticket_id === typeof b.ticket_id) {
+                return a.ticket_id < b.ticket_id ? -1 : 1;
+              }
+              return typeof a.ticket_id < typeof b.ticket_id ? -1 : 1;
+            }));
+          } else {
+            this.closeddataSource = new MatTableDataSource<Ticket>(this.slicedclosedjsonArray.sort(function (a, b) {
+              if (a.ticket_id === b.ticket_id) {
+                return 0;
+              }
+              if (typeof a.ticket_id === typeof b.ticket_id) {
+                return a.ticket_id > b.ticket_id ? -1 : 1;
+              }
+              return typeof a.ticket_id > typeof b.ticket_id ? -1 : 1;
+            }));
+          }
+          break;
+        case 'date':
+          if (sort.direction == 'asc') {
+            this.closeddataSource = new MatTableDataSource<Ticket>(this.slicedclosedjsonArray.sort(function (a, b) {
+              return (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0);
+            }));
+          } else {
+            this.closeddataSource = new MatTableDataSource<Ticket>(this.slicedclosedjsonArray.sort(function (a, b) {
+              return (a.date < b.date) ? 1 : ((b.date < a.date) ? -1 : 0);
+            }));
+          }
+          break;
+        case 'summary':
+          if (sort.direction == 'asc') {
+            this.closeddataSource = new MatTableDataSource<Ticket>(this.slicedclosedjsonArray.sort((one, two) => (one.issue_title < two.issue_title ? -1 : 1)));
+          } else {
+            this.closeddataSource = new MatTableDataSource<Ticket>(this.slicedclosedjsonArray.sort((one, two) => (one.issue_title > two.issue_title ? -1 : 1)));
+          }
+          break;
+      }
+    });
   }
 }
