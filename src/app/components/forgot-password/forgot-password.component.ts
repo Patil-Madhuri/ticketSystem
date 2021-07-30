@@ -23,8 +23,8 @@ export class ForgotPasswordComponent implements OnInit {
   }
   formInit() {
     this.loginForm = this.formBuilder.group({
-      email: ['', Validators.compose([Validators.required])],
-      // email: ['', Validators.compose([Validators.pattern('^[A-Za-z0-9._%+-]+@fanshaweonline.ca$'), Validators.required])],
+      // email: ['', Validators.compose([Validators.required])],
+      email: ['', Validators.compose([Validators.pattern('^[A-Za-z0-9._%+-]+@fanshaweonline.ca$'), Validators.required])],
     })
   }
 
@@ -58,7 +58,7 @@ export class ForgotPasswordComponent implements OnInit {
       this.apiService.forgetPassword(postData).subscribe(response => {
         console.log("response",response);
         
-        this.snackBar.open("Please enter valid login details", '', {
+        this.snackBar.open("Link sent successfully to entered email", '', {
           duration: 2000,
         });
       }, error => {

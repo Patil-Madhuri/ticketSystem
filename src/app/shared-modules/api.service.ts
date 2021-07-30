@@ -18,7 +18,7 @@ export class ApiService implements HttpInterceptor {
     urls = {
         login: 'login',
         signup: 'signup',
-        forget:'forget',
+        forget: 'forget',
         getLabmember: 'userByType',
         getalltickets: 'alltickets',
         raiseTicket: 'ticket',
@@ -34,7 +34,8 @@ export class ApiService implements HttpInterceptor {
         getTicketByStudentId: 'student/ticket',
         getTimeSlots: 'timeslots/reserve',
         makeLeader: 'userRoleChange',
-        cancelTicket:'ticket/cancel'
+        cancelTicket: 'ticket/cancel',
+        analytics: 'analytics'
     };
     get currentDate() {
         return new Date();
@@ -70,8 +71,6 @@ export class ApiService implements HttpInterceptor {
     }
 
     cancelTicket(payload) {
-        console.log(payload);
-        
         return this.http.put(this.urls.cancelTicket, payload)
     }
     assignStatus(payload) {
@@ -106,6 +105,9 @@ export class ApiService implements HttpInterceptor {
     }
     getTimeSlots() {
         return this.http.get(this.urls.getTimeSlots)
+    }
+    getAnyalyics(payload) {
+        return this.http.post(this.urls.analytics, payload)
     }
 }
 

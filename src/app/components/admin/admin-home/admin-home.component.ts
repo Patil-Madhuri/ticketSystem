@@ -25,6 +25,42 @@ export class AdminHomeComponent implements OnInit {
   dataSource = new MatTableDataSource<Ticket>(this.supportMember);
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  member: any
+  selectedMonth = new Date().getMonth() + 1;
+  selectedYear = new Date().getFullYear()
+  pieChartColor: any = [
+    {
+      backgroundColor: ['rgba(30, 169, 224, 0.8)',
+        'rgba(255,165,0,0.9)',
+        'rgba(139, 136, 136, 0.9)',
+        'rgba(255, 161, 181, 0.9)'
+      ]
+    }
+  ]
+  pieChartLabels = []
+  pieChartData = []
+  public barChartOptions = {
+    scaleShowVerticalLines: false,
+    responsive: true,
+    scales: {
+      yAxes: [
+        {
+          ticks: {
+            beginAtZero: true
+          }
+        }
+      ]
+    }
+  };
+  public barChartLabels = [];
+  public barChartType = 'bar';
+  public barChartLegend = false;
+  public barChartData = [
+    {
+      data: [], label: 'Tickets', barThickness: 30,
+      barPercentage: 0.9
+    }
+  ];
 
   constructor(private router: Router,
     private snackBar: MatSnackBar,
@@ -35,10 +71,23 @@ export class AdminHomeComponent implements OnInit {
   ngOnInit(): void {
     this.userId = JSON.parse(localStorage.getItem('user'))
     this.getLabMember();
+    this.getAnyalyics()
     setTimeout(() => {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
 
+    })
+  }
+  getAnyalyics() {
+    let postdata = {
+      month: this.selectedMonth,
+      year: this.selectedYear
+    }
+    this.apiService.getAnyalyics(postdata).subscribe(response => {
+      this.pieChartLabels = response['pie_chart'].label;
+      this.pieChartData = response['pie_chart'].data
+      this.barChartLabels = response['pie_chart'].label;
+      this.barChartData[0].data = response['pie_chart'].data
     })
   }
   getLabMember() {
@@ -61,15 +110,17 @@ export class AdminHomeComponent implements OnInit {
     }
   }
 
-  makeLeader(data) {
+  makeLeader() {
     let postdata = {
-      users_id: data.id,
+      users_id: this.member,
       role: 'lableader'
     }
     this.apiService.makeLeader(postdata).subscribe(res => {
       this.snackBar.open("Marked as leader successfully", '', {
         duration: 2000,
       });
+      this.member = "";
+      this.getLabMember();
     })
   }
 

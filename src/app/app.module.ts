@@ -16,6 +16,8 @@ import { LabmemberComponent } from './components/lab-member/labmember/labmember.
 import { LabSquadComponent } from './components/labsquad/lab-squad/lab-squad.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { AdminHomeComponent } from './components/admin/admin-home/admin-home.component';
+import { ChartsModule } from 'ng2-charts';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,7 +36,8 @@ import { AdminHomeComponent } from './components/admin/admin-home/admin-home.com
     AppRoutingModule,
     BrowserAnimationsModule,
     AppMaterial,
-    HttpClientModule
+    HttpClientModule,
+    ChartsModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: ApiService, multi: true }],
   bootstrap: [AppComponent],

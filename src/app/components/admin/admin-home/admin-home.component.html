@@ -18,37 +18,47 @@
         <div>
           <h4>Today's Date: {{currentDate | date: 'MMMM d, y'}}</h4>
         </div>
-     
-        <!-- <div class="search-container">
-          <form>
-            <input class="searchinput" (keyup)="applyFilter($event)" type="text" placeholder="Search.." name="search">
-            <button type="submit">
-              <mat-icon>search</mat-icon>
-            </button>
-          </form>
-        </div> -->
+        <div style="display: flex;align-items: center;">
+          <mat-form-field>
+            <mat-select placeholder="Select Lab Member" [(ngModel)]="member">
+              <mat-option *ngFor="let item of supportMember" [value]="item.id">{{item.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button mat-stroked-button color="primary" style="margin-left: 2%;height: 35px;" (click)="makeLeader()">Make
+            Leader</button>
+        </div>
       </div>
 
+      <div style="display: flex;margin-top: 2%;">
+       <div style="display: flex;align-items: center;width: 15%;">
+        <label for="">Month :</label>
+        <select [(ngModel)]="selectedMonth" style="width: 30%;height: 30px;">
+          <option selected="selectedMonth == item" *ngFor="let item of [1,2,3,4,5,6,7,8,9,10,11,12]" value="{{item}}">{{item}}</option>
+        </select>
+       </div>
+       <div style="display: flex;align-items: center;width: 15%;">
+        <label for="">Year :</label>
+        <select [(ngModel)]="selectedYear"  style="width: 30%;height: 30px;">
+          <option  selected="selectedYear == item" *ngFor="let item of [2020,2021,2022,2023,2024,2025]" value="{{item}}">{{item}}</option>
+        </select>
+       </div>
 
-      <div class="mat-elevation-z8">
-        <mat-table [dataSource]="dataSource" matSort>
-          <ng-container matColumnDef="assignto">
-            <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
-            <mat-cell *matCellDef="let element;let i = index">
-              <mat-form-field >
-                <mat-select placeholder="Select Lab Member" [(ngModel)]="member">
-                  <mat-option *ngFor="let item of supportMember" [value]="item.id">{{item.name}}</mat-option>
-                </mat-select>
-              </mat-form-field>  
-              <button mat-stroked-button color="primary" style="margin-left: 2%;" (click)="makeLeader(element)">Make Leader</button>
-            </mat-cell>
-          </ng-container>
-          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-        </mat-table>
+       <button mat-stroked-button color="primary" style="margin-left: 2%;height: 35px;" (click)="getAnyalyics()">Get Analytics</button>
       </div>
-      <mat-paginator [length]="jsonArray.length" [pageSize]="5" (page)="pageChanged($event)"></mat-paginator>
 
+      <div style="display: flex;margin-top: 2%;">
+        <div style="width: 48%; height: 48%;">
+          <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+            [legend]="barChartLegend" [chartType]="barChartType" [colors]="pieChartColor">
+          </canvas>
+        </div>
+
+        <div style="width: 48%;
+       height: 48%;margin-left: 2%;">
+          <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="'doughnut'"
+            [colors]="pieChartColor"></canvas>
+        </div>
+      </div>
     </div>
   </div>
 </div>

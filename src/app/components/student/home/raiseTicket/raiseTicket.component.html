@@ -65,7 +65,7 @@
     <div>
       <mat-form-field style="width: 100%">
         <mat-label>Timeslot</mat-label>
-        <mat-select formControlName="timeslot" multiple required>
+        <mat-select formControlName="timeslot" multiple  required>
           <mat-option *ngFor="let time of timeSlots"  [value]="time.id" [disabled]="time.reserved">
             {{time.time}}
           </mat-option>
