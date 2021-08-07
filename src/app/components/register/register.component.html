@@ -27,13 +27,13 @@
               {{ getErrorMessage('password', 'Password') }} </mat-error>
           </mat-form-field>
         </div>
-        <div class="form-div">
+        <!-- <div class="form-div">
             <mat-label>Role *</mat-label>
             <mat-radio-group formControlName="role" class="singupas">
               <mat-radio-button value="student">Student</mat-radio-button>
               <mat-radio-button value="labmember">Lab Member</mat-radio-button>
             </mat-radio-group>
-        </div>
+        </div> -->
         <div class="button-div" fxLayoutAlign="end end" fxLayout="column">
           <button mat-button type="submit" class="login-button">Register</button>
           <span class="reg">Already have an account? <a href="" [routerLink]="['/login']"> Login !</a></span>

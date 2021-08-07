@@ -49,7 +49,8 @@ export class ViewAssignTicketComponent implements OnInit {
     console.log(this.assignTo);
     let postData = {
       "ticket_id": this.data.id,
-      "labmem_id": this.assignTo
+      "labmem_id": this.assignTo,
+      "timeslot": this.data.timeslot[0].id
     }
     this.apiService.assignTicketToLabMember(postData).subscribe(respone => {
       this.snackBar.open("Ticket assigned successfully", '', {

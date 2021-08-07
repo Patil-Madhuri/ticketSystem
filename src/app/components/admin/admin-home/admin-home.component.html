@@ -18,34 +18,55 @@
         <div>
           <h4>Today's Date: {{currentDate | date: 'MMMM d, y'}}</h4>
         </div>
-        <div style="display: flex;align-items: center;">
-          <mat-form-field>
-            <mat-select placeholder="Select Lab Member" [(ngModel)]="member">
-              <mat-option *ngFor="let item of supportMember" [value]="item.id">{{item.name}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <button mat-stroked-button color="primary" style="margin-left: 2%;height: 35px;" (click)="makeLeader()">Make
-            Leader</button>
+        <div>
+          <div style="display: flex;align-items: center;">
+            <mat-form-field>
+              <mat-select placeholder="Select Lab Member" [(ngModel)]="member">
+                <mat-option *ngFor="let item of supportMember" [value]="item.id">{{item.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button mat-stroked-button color="primary" style="margin-left: 2%;height: 35px;" (click)="makeLeader()">Make
+              Leader</button>
+            <button mat-stroked-button color="warn" (click)="removeLeaderMember('leader')" style="margin-left: 2%;">Remove
+              Leader</button>
+          </div>
+
+          <div style="display: flex;align-items: center;">
+            <mat-form-field>
+              <mat-select placeholder="Select Student" [(ngModel)]="student">
+                <mat-option *ngFor="let item of students" [value]="item.id">{{item.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button mat-stroked-button color="primary" style="margin-left: 2%;height: 35px;" (click)="makeMember()">Make
+              Lab Member</button>
+            <button mat-stroked-button color="warn" (click)="removeLeaderMember('member')" style="margin-left: 2%;">Remove Lab
+              Member</button>
+          </div>
         </div>
       </div>
 
       <div style="display: flex;margin-top: 2%;">
-       <div style="display: flex;align-items: center;width: 15%;">
-        <label for="">Month :</label>
-        <select [(ngModel)]="selectedMonth" style="width: 30%;height: 30px;">
-          <option selected="selectedMonth == item" *ngFor="let item of [1,2,3,4,5,6,7,8,9,10,11,12]" value="{{item}}">{{item}}</option>
-        </select>
-       </div>
-       <div style="display: flex;align-items: center;width: 15%;">
-        <label for="">Year :</label>
-        <select [(ngModel)]="selectedYear"  style="width: 30%;height: 30px;">
-          <option  selected="selectedYear == item" *ngFor="let item of [2020,2021,2022,2023,2024,2025]" value="{{item}}">{{item}}</option>
-        </select>
-       </div>
+        <div style="display: flex;align-items: center;width: 15%;">
+          <label for="">Month :</label>
+          <select [(ngModel)]="selectedMonth" style="width: 30%;height: 30px;">
+            <option selected="selectedMonth == item" *ngFor="let item of [1,2,3,4,5,6,7,8,9,10,11,12]" value="{{item}}">
+              {{item}}</option>
+          </select>
+        </div>
+        <div style="display: flex;align-items: center;width: 15%;">
+          <label for="">Year :</label>
+          <select [(ngModel)]="selectedYear" style="width: 30%;height: 30px;">
+            <option selected="selectedYear == item" *ngFor="let item of [2020,2021,2022,2023,2024,2025]"
+              value="{{item}}">{{item}}</option>
+          </select>
+        </div>
 
-       <button mat-stroked-button color="primary" style="margin-left: 2%;height: 35px;" (click)="getAnyalyics()">Get Analytics</button>
+        <button mat-stroked-button color="primary" style="margin-left: 2%;height: 35px;" (click)="getAnyalyics()">Get
+          Analytics</button>
       </div>
-
+      <div style="display: flex;justify-content: center;">
+        <h4>Tickets Details</h4>
+      </div>
       <div style="display: flex;margin-top: 2%;">
         <div style="width: 48%; height: 48%;">
           <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"

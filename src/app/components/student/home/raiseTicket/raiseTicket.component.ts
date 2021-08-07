@@ -53,8 +53,6 @@ export class RaiseTicket implements OnInit {
       issue_description: ['', Validators.required],
       date: ['', Validators.required],
       timeslot: ['', Validators.required],
-      // behalf_of: ['', Validators.required],
-      // behalf_of_name: ['']
     })
   }
   closeForm(data) {

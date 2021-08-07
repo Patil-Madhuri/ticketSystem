@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { ApiService } from 'src/app/shared-modules/api.service';
 import { ViewAssignTicketComponent } from '../../labsquad/view-assign-ticket/view-assign-ticket.component';
 import { Ticket } from '../../student/home/home.component';
+import { RemoveLeaderMemberComponent } from '../remove-leader-member/remove-leader-member.component';
 
 @Component({
   selector: 'app-admin-home',
@@ -21,11 +22,13 @@ export class AdminHomeComponent implements OnInit {
   slicedArray: any = []
   userId: any
   supportMember: any = [];
+  students: any = [];
   displayedColumns: string[] = ['assignto'];
   dataSource = new MatTableDataSource<Ticket>(this.supportMember);
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   member: any
+  student: any
   selectedMonth = new Date().getMonth() + 1;
   selectedYear = new Date().getFullYear()
   pieChartColor: any = [
@@ -72,6 +75,7 @@ export class AdminHomeComponent implements OnInit {
     this.userId = JSON.parse(localStorage.getItem('user'))
     this.getLabMember();
     this.getAnyalyics()
+    this.getStudents()
     setTimeout(() => {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -96,11 +100,16 @@ export class AdminHomeComponent implements OnInit {
     }
     this.apiService.getLabmember(postdata).subscribe(response => {
       this.supportMember = response;
-      this.slicedArray = this.supportMember.slice(0, 5)
-      this.dataSource = new MatTableDataSource<Ticket>(this.supportMember);
     })
   }
-
+  getStudents() {
+    let postdata = {
+      "user_type": "student"
+    }
+    this.apiService.getLabmember(postdata).subscribe(response => {
+      this.students = response;
+    })
+  }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -124,6 +133,40 @@ export class AdminHomeComponent implements OnInit {
     })
   }
 
+  makeMember() {
+    let postdata = {
+      users_id: this.student,
+      role: 'labmember'
+    }
+    this.apiService.makeLeader(postdata).subscribe(res => {
+      this.snackBar.open("Marked as member successfully", '', {
+        duration: 2000,
+      });
+      this.student = "";
+      this.getStudents();
+    })
+  }
+
+  removeLeaderMember(value) {
+    let data = {
+      list: [],
+      value: value
+    }
+    if (value == 'member') {
+      data.list = this.students;
+    } else {
+      data.list = this.supportMember
+    }
+    const dialog = this.dialog.open(RemoveLeaderMemberComponent, {
+      width: '40%',
+      data: data,
+    });
+    dialog.afterClosed().subscribe(res => {
+      console.log("res", res);
+      this.getLabMember();
+      this.getStudents()
+    })
+  }
 
   redirectTo() {
     this.router.navigate(['/login'])

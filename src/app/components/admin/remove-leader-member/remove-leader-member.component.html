@@ -1,0 +1,23 @@
+<h1 mat-dialog-title>{{data.value == 'member'  ? 'Remove Member': 'Remove Leader'}}</h1>
+<div mat-dialog-content>
+  <div>
+    <mat-form-field style="width: 100%">
+      <mat-label>Select</mat-label>
+      <mat-select [(ngModel)]="selectedId" required>
+        <mat-option *ngFor="let time of supportMember" [value]="time.id">
+          {{time.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+<div mat-dialog-actions class="right">
+  <button mat-raised-button (click)="removeMember()">
+    <mat-icon>save</mat-icon>
+    <span>Save</span>
+  </button>
+  <button mat-raised-button type="button" mat-dialog-close>
+    <mat-icon>clear</mat-icon>
+    <span>Cancel</span>
+  </button>
+</div>

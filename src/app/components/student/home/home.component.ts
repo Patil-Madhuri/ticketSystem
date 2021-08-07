@@ -75,11 +75,11 @@ export class HomeComponent implements OnInit {
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.dataSource = new MatTableDataSource<Ticket>(this.jsonArray.filter(el => el.issue_title.includes(filterValue.trim().toLowerCase())));
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage()
-    }
+    // if (this.dataSource.paginator) {
+    //   this.dataSource.paginator.firstPage()
+    // }
   }
   cancelTicket(object) {
     console.log(object);
@@ -92,10 +92,10 @@ export class HomeComponent implements OnInit {
       cancelButtonText: 'No, keep it'
     }).then((result) => {
       if (result.isConfirmed) {
-        let postdata=  {
+        let postdata = {
           ticket_id: object.id
         }
-        this.apiService.cancelTicket(postdata).subscribe(res=> {
+        this.apiService.cancelTicket(postdata).subscribe(res => {
           this.snackBar.open("Ticket cancelled successfully", '', {
             duration: 2000,
           });

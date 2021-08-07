@@ -93,7 +93,7 @@ export class LabmemberComponent implements OnInit {
       this.createdjsonArray = response['data'];
       this.slicedcreatedjsonArray = this.createdjsonArray?.slice(0, 5)
       this.createddataSource = new MatTableDataSource<Ticket>(this.slicedcreatedjsonArray);
-      this.createdCount = response['count'];
+      this.createdCount = response['counts'];
       if (response['message']) {
         this.createdCount = 0;
         this.createdjsonArray = []
@@ -109,7 +109,7 @@ export class LabmemberComponent implements OnInit {
       this.pendingjsonArray = response['data'];
       this.slicedpendingjsonArray = this.pendingjsonArray?.slice(0, 5)
       this.pendingdataSource = new MatTableDataSource<Ticket>(this.slicedpendingjsonArray);
-      this.pendingCount = response['count'];
+      this.pendingCount = response['counts'];
       if (response['message']) {
         this.pendingCount = 0;
         this.pendingjsonArray = []
@@ -125,7 +125,7 @@ export class LabmemberComponent implements OnInit {
       this.inprogressjsonArray = response['data'];
       this.slicedinprogressjsonArray = this.inprogressjsonArray?.slice(0, 5)
       this.inprogressdataSource = new MatTableDataSource<Ticket>(this.slicedinprogressjsonArray);
-      this.inprogressCount = response['count'];
+      this.inprogressCount = response['counts'];
       if (response['message']) {
         this.inprogressCount = 0;
         this.inprogressjsonArray = []
@@ -141,7 +141,7 @@ export class LabmemberComponent implements OnInit {
       this.closedjsonArray = response['data'];
       this.slicedclosedjsonArray = this.closedjsonArray?.slice(0, 5)
       this.closeddataSource = new MatTableDataSource<Ticket>(this.slicedclosedjsonArray);
-      this.closedCount = response['count'];
+      this.closedCount = response['counts'];
       if (response['message']) {
         this.closedCount = 0;
         this.closedjsonArray = []
@@ -153,31 +153,36 @@ export class LabmemberComponent implements OnInit {
     switch (this.applyFilterOn) {
       case 'created':
         const filterValue = (event.target as HTMLInputElement).value;
-        this.createddataSource.filter = filterValue.trim().toLowerCase();
-        if (this.createddataSource.paginator) {
-          this.createddataSource.paginator.firstPage()
-        }
+        // this.createddataSource.filter = filterValue.trim().toLowerCase();
+        // if (this.createddataSource.paginator) {
+        //   this.createddataSource.paginator.firstPage()
+        // }
+        this.createddataSource = new MatTableDataSource<Ticket>(this.createdjsonArray.filter(el => el.issue_title.includes(filterValue.trim().toLowerCase())));
+
         break;
       case 'pending':
         const filterValue1 = (event.target as HTMLInputElement).value;
-        this.pendingdataSource.filter = filterValue1.trim().toLowerCase();
-        if (this.pendingdataSource.paginator) {
-          this.pendingdataSource.paginator.firstPage()
-        }
+        // this.pendingdataSource.filter = filterValue1.trim().toLowerCase();
+        // if (this.pendingdataSource.paginator) {
+        //   this.pendingdataSource.paginator.firstPage()
+        // }
+        this.pendingdataSource = new MatTableDataSource<Ticket>(this.pendingjsonArray.filter(el => el.issue_title.includes(filterValue.trim().toLowerCase())));
         break;
       case 'inprogress':
         const filterValue2 = (event.target as HTMLInputElement).value;
-        this.inprogressdataSource.filter = filterValue2.trim().toLowerCase();
-        if (this.inprogressdataSource.paginator) {
-          this.inprogressdataSource.paginator.firstPage()
-        }
+        // this.inprogressdataSource.filter = filterValue2.trim().toLowerCase();
+        // if (this.inprogressdataSource.paginator) {
+        //   this.inprogressdataSource.paginator.firstPage()
+        // }
+        this.inprogressdataSource = new MatTableDataSource<Ticket>(this.inprogressjsonArray.filter(el => el.issue_title.includes(filterValue.trim().toLowerCase())));
         break;
       case 'closed':
         const filterValue3 = (event.target as HTMLInputElement).value;
-        this.closeddataSource.filter = filterValue3.trim().toLowerCase();
-        if (this.closeddataSource.paginator) {
-          this.closeddataSource.paginator.firstPage()
-        }
+        // this.closeddataSource.filter = filterValue3.trim().toLowerCase();
+        // if (this.closeddataSource.paginator) {
+        //   this.closeddataSource.paginator.firstPage()
+        // }
+        this.closeddataSource = new MatTableDataSource<Ticket>(this.closedjsonArray.filter(el => el.issue_title.includes(filterValue.trim().toLowerCase())));
         break;
       default:
         break;
@@ -240,7 +245,7 @@ export class LabmemberComponent implements OnInit {
           this.getPendingTickets();
           this.getInprogressTickets();
         }
-    
+
       })
 
     } else {

@@ -49,11 +49,13 @@ export class LabSquadComponent implements OnInit {
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    // this.dataSource.filter = filterValue.trim().toLowerCase();
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage()
-    }
+    // if (this.dataSource.paginator) {
+    //   this.dataSource.paginator.firstPage()
+    // }
+    this.dataSource = new MatTableDataSource<Ticket>(this.jsonArray.filter(el => el.issue_title.includes(filterValue.trim().toLowerCase())));
+
   }
 
   viewAssignTicket(data) {
@@ -70,8 +72,8 @@ export class LabSquadComponent implements OnInit {
   getTickets() {
     this.apiService.getalltickets().subscribe(response => {
       this.jsonArray = response;
-      this.slicedArray = this.jsonArray.slice(0, 5)
-      this.dataSource = new MatTableDataSource<Ticket>(this.jsonArray);
+      this.slicedArray = this.jsonArray?.slice(0, 5)
+      this.dataSource = new MatTableDataSource<Ticket>(this.slicedArray);
     })
   }
 
