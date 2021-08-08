@@ -105,6 +105,7 @@ export class HomeComponent implements OnInit {
     })
   }
   viewAssignTicket(data) {
+    data.isViewFromStudent = true;
     const dialog = this.dialog.open(ViewAssignTicketComponent, {
       width: '40%',
       data: data ? data : null,

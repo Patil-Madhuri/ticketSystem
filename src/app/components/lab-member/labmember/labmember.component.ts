@@ -244,6 +244,7 @@ export class LabmemberComponent implements OnInit {
           this.getCreatedTickets();
           this.getPendingTickets();
           this.getInprogressTickets();
+          this.getClosedTickets();
         }
 
       })

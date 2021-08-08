@@ -144,6 +144,7 @@ export class AdminHomeComponent implements OnInit {
       });
       this.student = "";
       this.getStudents();
+      this.getLabMember()
     })
   }
 
