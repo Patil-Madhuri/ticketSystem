@@ -10,6 +10,9 @@ import { ApiService } from 'src/app/shared-modules/api.service';
 import { ViewAssignTicketComponent } from '../../labsquad/view-assign-ticket/view-assign-ticket.component';
 import { Ticket } from '../../student/home/home.component';
 import { RemoveLeaderMemberComponent } from '../remove-leader-member/remove-leader-member.component';
+import * as XLSX from 'xlsx';
+import * as moment from 'moment';
+import * as FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-admin-home',
@@ -64,23 +67,76 @@ export class AdminHomeComponent implements OnInit {
       barPercentage: 0.9
     }
   ];
-
+  totalnumber = 0
   constructor(private router: Router,
     private snackBar: MatSnackBar,
     private apiService: ApiService,
     private http: HttpClient,
     private dialog: MatDialog) { }
-
+  analyticsArray: any = []
   ngOnInit(): void {
     this.userId = JSON.parse(localStorage.getItem('user'))
     this.getLabMember();
     this.getAnyalyics()
+    this.getallassigntickets()
     this.getStudents()
     setTimeout(() => {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
 
     })
+  }
+  getallassigntickets() {
+    this.apiService.allassigntickets().subscribe(response => {
+      this.analyticsArray = response
+    })
+  }
+  exportData() {
+    const headerNames = ['Student name', 'Ticket Id', 'Ticket Status', 'Date', 'Timeslot'];
+    const headers = ['name', 'ticket_id', 'status', 'date', 'timeslot'];
+
+    this.exportAsExcelFile(this.analyticsArray, 'analyticsReport', headers,
+      headerNames);
+  }
+  exportAsExcelFile(json: any[], excelFileName: string, headers: any[], headerNames: any[]): void {
+    const sheetData = [[], [], [], [], []];
+    sheetData.push(headerNames);
+    json.forEach((val) => {
+      const data = [];
+      headers.forEach(header => {
+        data.push(val[header]);
+      });
+      sheetData.push(data);
+    });
+    const length = sheetData.length;
+    const worksheet: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(sheetData);
+
+    worksheet['A1'] = { t: 's', v: 'Analytics Report' };
+
+    worksheet['A3'] = { t: 's', v: 'Date: ' + moment(new Date()).format('DD/MM/YYYY') };
+
+    worksheet['!merges'] = [{ s: { c: 0, r: 0 }, e: { c: headers.length + 4, r: 0 } },
+    { s: { c: 0, r: 1 }, e: { c: headers.length + 4, r: 1 } },
+    { s: { c: 0, r: 2 }, e: { c: headers.length + 4, r: 2 } },
+    { s: { c: 0, r: 3 }, e: { c: headers.length + 4, r: 3 } }];
+
+
+    worksheet['!ref'] = XLSX.utils.encode_range({
+      s: { c: 0, r: 0 },
+      e: { c: headerNames.length, r: 1 + length + 3 }
+    });
+
+    const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    this.saveAsExcelFile(excelBuffer, excelFileName);
+  }
+
+  private saveAsExcelFile(buffer: any, fileName: string): void {
+    const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const EXCEL_EXTENSION = '.xlsx';
+
+    const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
+    FileSaver.saveAs(data, fileName + '_' + moment(new Date()).format('DD/MM/YYYY') + EXCEL_EXTENSION);
   }
   getAnyalyics() {
     let postdata = {
@@ -92,6 +148,10 @@ export class AdminHomeComponent implements OnInit {
       this.pieChartData = response['pie_chart'].data
       this.barChartLabels = response['pie_chart'].label;
       this.barChartData[0].data = response['pie_chart'].data
+      for (let index = 0; index < response['pie_chart'].data.length; index++) {
+        const element = response['pie_chart'].data[index];
+        this.totalnumber += element
+      }
     })
   }
   getLabMember() {

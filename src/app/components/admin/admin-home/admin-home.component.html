@@ -27,7 +27,8 @@
             </mat-form-field>
             <button mat-stroked-button color="primary" style="margin-left: 2%;height: 35px;" (click)="makeLeader()">Make
               Leader</button>
-            <button mat-stroked-button color="warn" (click)="removeLeaderMember('leader')" style="margin-left: 2%;">Remove
+            <button mat-stroked-button color="warn" (click)="removeLeaderMember('leader')"
+              style="margin-left: 2%;">Remove
               Leader</button>
           </div>
 
@@ -39,7 +40,8 @@
             </mat-form-field>
             <button mat-stroked-button color="primary" style="margin-left: 2%;height: 35px;" (click)="makeMember()">Make
               Lab Member</button>
-            <button mat-stroked-button color="warn" (click)="removeLeaderMember('member')" style="margin-left: 2%;">Remove Lab
+            <button mat-stroked-button color="warn" (click)="removeLeaderMember('member')"
+              style="margin-left: 2%;">Remove Lab
               Member</button>
           </div>
         </div>
@@ -65,7 +67,11 @@
           Analytics</button>
       </div>
       <div style="display: flex;justify-content: center;">
-        <h4>Tickets Details</h4>
+        <div>
+          <h4>Tickets Details</h4>
+          <h4>Total no of tickets: {{totalnumber}}</h4>
+          <button mat-stroked-button color="primary" style="margin-left: 2%;height: 35px;" (click)="exportData()">Export Data As Excel</button>
+        </div>
       </div>
       <div style="display: flex;margin-top: 2%;">
         <div style="width: 48%; height: 48%;">
